@@ -5,7 +5,9 @@ FROM python:3.12-alpine
 WORKDIR /app
 
 # Copy application files
-COPY index.html style.css app.bundle.js sample-messages.js detector.js app.js server.py /app/
+COPY index.html server.py /app/
+COPY css /app/css
+COPY js /app/js
 
 # Cloud Run defaults to port 8080
 ENV PORT=8080
