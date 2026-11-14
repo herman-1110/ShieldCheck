@@ -1,0 +1,12 @@
+# Local & Environment
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+tmp/

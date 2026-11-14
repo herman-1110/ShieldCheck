@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShieldCheck — Suspicious Message Detector & Safety Guide</title>
+  <meta name="description" content="Help customers recognize scam messages, identify red flags, and verify safely before acting.">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-100">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-bold text-lg text-slate-900 tracking-tight">ShieldCheck</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Customer Guard</span>
+          </div>
+          <p class="text-xs text-slate-500 hidden sm:block">Recognize scams, spot red flags & check safely before acting</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3 text-xs text-slate-500">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-medium border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          100% Private (Runs In Browser)
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- Quick Presets Carousel / Bar -->
+    <div class="mb-8 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Try Real-World Examples:</span>
+        </div>
+        <span class="text-xs text-slate-400">Click any scenario to see immediate analysis</span>
+      </div>
+      <div id="sample-buttons-container" class="flex flex-wrap gap-2">
+        <!-- Preset buttons injected via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Main Workspace Split Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- LEFT COLUMN: Input & Text Management (5 Cols) -->
+      <section class="lg:col-span-5 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-3">
+            <label for="message-input" class="font-bold text-sm text-slate-800 flex items-center gap-2">
+              <i data-lucide="message-square-text" class="w-4 h-4 text-indigo-600"></i>
+              Paste the Suspicious Message
+            </label>
+            <span id="char-count" class="text-xs text-slate-400 font-mono">0 chars</span>
+          </div>
+
+          <p class="text-xs text-slate-500 mb-3">
+            Paste any SMS, email, WhatsApp message, or direct message claiming to be from customer support or security.
+          </p>
+
+          <div class="relative">
+            <textarea
+              id="message-input"
+              rows="8"
+              class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm leading-relaxed text-slate-800 placeholder-slate-400 transition resize-y font-normal"
+              placeholder="e.g. 'URGENT: Chase Bank: Your account has been suspended due to suspicious activity. Verify immediately at http://chase-security-check.xyz to avoid permanent closure...'"></textarea>
+          </div>
+
+          <!-- Input Action Bar -->
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+            <div class="flex items-center space-x-2">
+              <button
+                id="btn-paste"
+                type="button"
+                class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition flex items-center gap-1.5">
+                <i data-lucide="clipboard" class="w-3.5 h-3.5"></i>
+                Paste
+              </button>
+              <button
+                id="btn-clear"
+                type="button"
+                class="px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition flex items-center gap-1.5">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                Clear
+              </button>
+            </div>
+
+            <button
+              id="btn-analyze"
+              type="button"
+              class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs tracking-wide shadow-md shadow-indigo-200 transition flex items-center gap-2 active:scale-95">
+              <i data-lucide="search" class="w-4 h-4"></i>
+              Analyze Message
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Awareness Card -->
+        <div class="bg-gradient-to-br from-indigo-50/70 to-blue-50/50 rounded-2xl border border-indigo-100 p-5">
+          <div class="flex items-center gap-2.5 mb-2.5">
+            <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+              <i data-lucide="lightbulb" class="w-4 h-4"></i>
+            </div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900">3 Golden Rules of Support Security</h3>
+          </div>
+          <ul class="text-xs text-indigo-950/80 space-y-2 mt-3 font-normal">
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-600 mt-0.5 flex-shrink-0"></i>
+              <span><strong>No support agent needs your OTP:</strong> One-time passcodes and passwords are strictly for you alone.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-600 mt-0.5 flex-shrink-0"></i>
+              <span><strong>Check the domain, not the display name:</strong> Anyone can set their sender name to "Apple Support" or "Chase Bank".</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-indigo-600 mt-0.5 flex-shrink-0"></i>
+              <span><strong>Always hang up & call back:</strong> Use the telephone number printed on your card or the official app.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: Results Dashboard (7 Cols) -->
+      <section class="lg:col-span-7">
+
+        <!-- EMPTY STATE (Before Analysis) -->
+        <div id="results-empty" class="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
+          <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-4">
+            <i data-lucide="file-search" class="w-8 h-8"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 text-lg mb-1">Awaiting Message Input</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto leading-relaxed mb-6">
+            Paste a suspicious message on the left or click any sample preset button above to see instant red-flag breakdown and safety instructions.
+          </p>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-xs font-medium">
+            <i data-lucide="shield" class="w-4 h-4 text-slate-500"></i>
+            Interactive word-by-word red flag highlighter
+          </div>
+        </div>
+
+        <!-- ACTIVE RESULTS PANEL -->
+        <div id="results-active" class="hidden space-y-6">
+
+          <!-- 1. Risk Gauge & Verdict Card -->
+          <div id="verdict-card" class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm relative overflow-hidden transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+              <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Risk Assessment</span>
+                <div class="flex items-center gap-3 mt-1">
+                  <span id="verdict-badge" class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase inline-flex items-center gap-1.5 shadow-sm">
+                    <!-- Injected badge -->
+                  </span>
+                </div>
+              </div>
+
+              <!-- Score Indicator -->
+              <div class="sm:text-right">
+                <span class="text-xs text-slate-400 font-medium">Calculated Scam Score</span>
+                <div class="flex items-baseline sm:justify-end gap-1">
+                  <span id="verdict-score" class="text-3xl font-extrabold text-slate-900 tracking-tight">0</span>
+                  <span class="text-xs font-semibold text-slate-400">/ 100</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Risk Meter Bar -->
+            <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden mb-3">
+              <div id="score-meter-bar" class="gauge-bar h-full rounded-full w-0 bg-slate-400"></div>
+            </div>
+
+            <p id="verdict-description" class="text-xs leading-relaxed text-slate-600">
+              <!-- Injected description -->
+            </p>
+          </div>
+
+          <!-- 2. Interactive Highlight View -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <i data-lucide="highlighter" class="w-4 h-4 text-indigo-600"></i>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">Visual Red-Flag Highlight</h3>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-slate-400">
+                <span class="inline-block w-2.5 h-2.5 rounded-sm bg-red-400"></span> Critical
+                <span class="inline-block w-2.5 h-2.5 rounded-sm bg-amber-400"></span> Warning
+                <span class="inline-block w-2.5 h-2.5 rounded-sm bg-yellow-200"></span> Suspicious
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-3">
+              Hover over or tap highlighted phrases to see why each specific pattern was flagged:
+            </p>
+
+            <div id="highlighted-text-container" class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm leading-relaxed text-slate-800 font-normal select-text">
+              <!-- Highlighted HTML inserted here -->
+            </div>
+          </div>
+
+          <!-- 3. Flagged Trigger Breakdown Cards -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">Detailed Warning Triggers</h3>
+              </div>
+              <span id="flag-count-pill" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">0 Flags</span>
+            </div>
+
+            <div id="flag-categories-list" class="space-y-3">
+              <!-- Flag category cards injected here -->
+            </div>
+          </div>
+
+          <!-- 4. Interactive "Safe Next Steps" Checklist -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">Safe Action Plan for the Customer</h3>
+              </div>
+              <button
+                id="btn-copy-report"
+                type="button"
+                class="px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition flex items-center gap-1.5 border border-slate-200">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                Copy Summary
+              </button>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-4">
+              Complete these steps safely to protect your account and identity before interacting further:
+            </p>
+
+            <div id="safety-checklist" class="space-y-3">
+              <!-- Action items injected here -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2.5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl text-xs font-medium">
+    <i data-lucide="info" class="w-4 h-4 text-indigo-400"></i>
+    <span id="toast-message">Notification</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>🛡️ Built for Challenge 03 — Empowering customers to detect social engineering & phishing safely.</p>
+      <p class="text-slate-400">Always verify independently through verified official channels.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.bundle.js"></script>
+</body>
+</html>
